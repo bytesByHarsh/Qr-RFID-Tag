@@ -31,7 +31,7 @@ def make_qr(text):
 
 def main():
     
-    action = input("Enter R for read and W for write\n")
+    action = input("Enter R for read and W for write: ")
     if (action=="W" or action=="w"):
         print("Enter the Following details")
         ID = input("ID: ")
@@ -58,17 +58,8 @@ def main():
         image = cv2.imread("test.png")
         # find the barcodes in the image and decode each of the barcodes
         barcodes = pyzbar.decode(image)
-        
-        # loop over the detected barcodes
-        for barcode in barcodes:
-            
-            # the barcode data is a bytes object so if we want to draw it on
-            # our output image we need to convert it to a string first
-            barcodeData = barcode.data.decode("utf-8")
-            barcodeType = barcode.type
-            # print the barcode data to the terminal
-            print(barcodeData)
-        # This part is for further processing with the data read 
+        barcodeData = barcodes[0].data.decode("utf-8")
+        barcodeType = barcodes[0].type
         ID,Type,Size,Fragile,Date,Time,Expiry,Temp=barcodeData.split("\n")         
         _,ID=ID.split(":")
         _,Type=Type.split(":")
@@ -79,12 +70,27 @@ def main():
         _,Expiry=Expiry.split(":")
         _,Temp=Temp.split(":")
         l,b,h = Size.split("x")
-            
+        l=int(l)
+        b=int(b)
+        h=int(h)
+        print('Package Information: ')
+        print('ID: ',ID)
+        print('Type: ',Type)
+        print('Size: ',l*b*h)
+        print('    Length: ',l)
+        print('    Breath: ',b)
+        print('    Height: ',h)
+        print('Fragile: ',Fragile)
+        print('Time: ',Time)
+        print('Expiry: ',Expiry)
+        print('Desired Temprature: ',Temp)
+        
         
 
 if __name__=="__main__":
     main()
     
+
 ```
 
 
@@ -137,3 +143,10 @@ void loop() {
 
 * Check information using RFID tag if hammpered or no responce then either RFID has default or packet is tamperred.
 * Compare with the original image to find if the product is tampered or not using ML.
+
+![Reader RFID](https://imgur.com/G38B6VJ.jpg)
+
+
+**For the network of such sensors**
+
+![Network RFID](https://imgur.com/4d584yP.jpg)
